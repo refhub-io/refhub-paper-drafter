@@ -6,4 +6,15 @@ The skill takes scattered notes (local files + RefHub vault queries) and produce
 
 **Invoke it** by asking the agent to draft a paper, or by typing the skill name in your harness.
 
-**Requires:** `refhub-cli` — see https://github.com/refhub-io/refhub-cli. For Codex: https://github.com/refhub-io/refhub-codex.
+**Requires:** the `refhub` CLI from `@refhub/cli` — see https://github.com/refhub-io/refhub-cli. For Codex vault operation guidance, see https://github.com/refhub-io/refhub-codex.
+
+Use the real RefHub CLI flow in the skill:
+
+```bash
+refhub vaults list
+refhub tags list --vault <vaultId>
+refhub items search --vault <vaultId> --tag <tagId>
+refhub export --vault <vaultId> --format json
+```
+
+Do not call a `refhub synthesis` command. Any synthesis should be produced by the agent from collected local notes and RefHub item/export data, with claim-level SOURCE MAP provenance.

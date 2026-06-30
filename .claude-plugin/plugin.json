@@ -5,7 +5,7 @@
   "author": {
     "name": "refhub-io"
   },
-  "license": "MIT",
+  "license": "GPL-3.0-only",
   "keywords": ["hci", "visualization", "research", "writing", "academic", "refhub"],
   "skills": ["./skills/refhub-paper-drafter"]
 }

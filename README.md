@@ -25,11 +25,13 @@ agent skill for drafting hci and visualization research papers from a refhub vau
 
 | tool | repo |
 |------|------|
-| `refhub-cli` | https://github.com/refhub-io/refhub-cli |
+| `refhub` CLI (`@refhub/cli`) | https://github.com/refhub-io/refhub-cli |
 | refhub claude plugin | https://github.com/refhub-io/refhub-claude |
 | refhub codex plugin | https://github.com/refhub-io/refhub-codex |
 
 must be installed and authenticated before use. this skill does not configure them.
+
+minimum RefHub API scopes: `vaults:read`; add `vaults:export` if using `refhub export`.
 
 ---
 
@@ -38,7 +40,8 @@ must be installed and authenticated before use. this skill does not configure th
 ### claude code
 
 ```bash
-claude plugin install github:refhub-io/refhub-paper-drafter
+claude plugin marketplace add https://github.com/refhub-io/refhub-paper-drafter
+claude plugin install refhub-paper-drafter@refhub-paper-drafter
 ```
 
 invoke with `/refhub-paper-drafter`
@@ -49,7 +52,7 @@ manifest: `.claude-plugin/plugin.json` — instructions: `CLAUDE.md`
 
 ### codex
 
-**from github** — add to `~/.agents/plugins/marketplace.json`:
+**from github** — add to the Codex/OpenAI agents plugin marketplace configuration:
 
 ```json
 {
@@ -69,7 +72,7 @@ git clone https://github.com/refhub-io/refhub-paper-drafter ~/plugins/refhub-pap
 ```json
 {
   "name": "refhub-paper-drafter",
-  "source": { "source": "local", "path": "./plugins/refhub-paper-drafter" },
+  "source": { "source": "local", "path": "~/plugins/refhub-paper-drafter" },
   "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
   "category": "Productivity"
 }
@@ -113,7 +116,37 @@ cp -r skills/refhub-paper-drafter ~/.agents/skills/
 interaction cost generally increases as hierarchies become more complex
 ```
 
-every sentence in the draft must trace to a source_map entry. gaps surface as `[NEEDS SOURCE: <claim>]` — the agent never fills them silently. `\cite{}` keys come from vault entry ids only.
+every sentence in the draft must trace to a source_map entry. gaps surface as `[NEEDS SOURCE: <claim>]` — the agent never fills them silently.
+
+citation keys use RefHub item `bibtex_key` first, then a stable sanitized item ID fallback. the final `.bib` export must use the same keys referenced by `\cite{}`.
+
+phase 1 uses the real RefHub CLI flow:
+
+```bash
+refhub vaults list
+refhub tags list --vault <vaultId>
+refhub items search --vault <vaultId> --tag <tagId>
+refhub export --vault <vaultId> --format json
+refhub export --vault <vaultId> --format bibtex
+```
+
+there is no `refhub synthesis` command requirement. synthesis is produced by the agent from local notes, item search results, and optional vault exports, and every synthesized claim must cite source_map entries.
+
+source_map entries include citation key, locator, evidence role/type/strength, and manuscript-use fields. final output includes an auditable claim-to-source matrix.
+
+## // submission readiness
+
+the skill is a drafting assistant with explicit readiness gates. a manuscript is not marked submission-ready unless all required gates pass:
+
+- zero unresolved `[NEEDS SOURCE]` markers
+- zero unresolved fatal r2 findings and explicit disposition of all major findings
+- ethics/irb/privacy and consent status, or a not-applicable rationale
+- ai-use disclosure
+- reproducibility/materials availability statement
+- venue/template/checklist status
+- paper/evaluation-type reporting fields
+- hci/visualization validity checks
+- figure/table inventory with source links, takeaway captions, placeholder status, and alt text
 
 ---
 
@@ -134,4 +167,4 @@ limitations            → specific • scope vs validity • each implies an op
 
 ## // license
 
-`MIT`
+`GPL-3.0-only` — see `LICENSE.md`.
