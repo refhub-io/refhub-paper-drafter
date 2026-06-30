@@ -1,0 +1,20 @@
+{
+  "name": "refhub-paper-drafter",
+  "interface": {
+    "displayName": "RefHub Paper Drafter"
+  },
+  "plugins": [
+    {
+      "name": "refhub-paper-drafter",
+      "source": {
+        "source": "local",
+        "path": "./plugins/refhub-paper-drafter"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

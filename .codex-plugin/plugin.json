@@ -1,0 +1,28 @@
+{
+  "name": "refhub-paper-drafter",
+  "version": "1.0.0",
+  "description": "Draft HCI and visualization research papers from scattered notes and a RefHub vault. Grounded, structured, and modeled on best-paper-award exemplars — with interactive scaffolding, source-map grounding, writing quality review, and an adversarial R2 reviewer loop.",
+  "author": {
+    "name": "refhub-io",
+    "url": "https://github.com/refhub-io"
+  },
+  "homepage": "https://github.com/refhub-io/refhub-paper-drafter",
+  "repository": "https://github.com/refhub-io/refhub-paper-drafter",
+  "license": "MIT",
+  "keywords": ["hci", "visualization", "research", "writing", "academic", "refhub"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "RefHub Paper Drafter",
+    "shortDescription": "Draft HCI and visualization papers from your notes",
+    "longDescription": "Takes your scattered notes and RefHub vault entries and produces a grounded manuscript draft modeled on best practices from award-winning HCI and visualization research. Includes interactive scaffolding, source-map grounding (no hallucinated claims), writing quality review, and an adversarial R2 reviewer loop. Outputs Markdown or functional LaTeX to session, local file, or Overleaf via Git bridge.",
+    "developerName": "refhub-io",
+    "category": "Productivity",
+    "capabilities": ["Interactive", "Write"],
+    "websiteURL": "https://github.com/refhub-io/refhub-paper-drafter",
+    "defaultPrompt": [
+      "Draft a paper from my notes and vault",
+      "Scaffold a new paper submission",
+      "Run R2 review on my paper draft"
+    ]
+  }
+}
