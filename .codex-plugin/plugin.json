@@ -1,6 +1,6 @@
 {
   "name": "refhub-paper-drafter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Draft HCI and visualization research papers from scattered notes and a RefHub vault. Grounded, structured, and modeled on best-paper-award exemplars — with interactive scaffolding, source-map grounding, writing quality review, and an adversarial R2 reviewer loop.",
   "author": {
     "name": "refhub-io",
