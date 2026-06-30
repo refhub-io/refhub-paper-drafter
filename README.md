@@ -1,172 +1,137 @@
 # refhub-paper-drafter
 
-A plugin for drafting HCI and visualization research papers. Takes your scattered notes and RefHub vault entries and produces a grounded, structured manuscript modeled on best practices from award-winning research in human-computer interaction and visualization.
+> `// draft • ground • review`
 
-**Part of the [RefHub](https://github.com/refhub-io) ecosystem.**
+agent skill for drafting hci and visualization research papers from a refhub vault and local notes. every claim traces to a source. nothing is invented.
 
----
-
-## What it does
-
-1. **Collects your inputs** — reads local note files and queries your RefHub vault by topic tags, building a SOURCE MAP of every available claim and reference
-2. **Scaffolds interactively** — back-and-forth dialogue to lock in framing, contributions, argument structure, related work positioning, and target venue before writing anything
-3. **Drafts with grounding** — every sentence traces to the SOURCE MAP; ungrounded content is flagged `[NEEDS SOURCE]` rather than silently filled
-4. **Reviews writing quality** — strips AI-giveaway phrases, hollow intensifiers, filler transitions, and vague claims; requires precise academic prose
-5. **Runs R2 hostile review** — adversarial peer review with severity-rated critiques (minor / major / fatal), then revises the draft to address them
-6. **Routes output** — Markdown or functional LaTeX; to the session, a local file, or directly to an Overleaf project via Git bridge
+**part of the [refhub](https://github.com/refhub-io) ecosystem.**
 
 ---
 
-## Prerequisites
+## // what it does
 
-| Tool | Purpose | Repo |
-|------|---------|------|
-| `refhub-cli` | Query your research vault | https://github.com/refhub-io/refhub-cli |
-| RefHub Claude plugin | Claude Code vault integration | https://github.com/refhub-io/refhub-claude |
-| RefHub Codex plugin | Codex vault integration | https://github.com/refhub-io/refhub-codex |
-
-These must be installed and authenticated before using this skill. The skill does not configure them.
+| phase | action |
+|-------|--------|
+| `collect` | reads local note files + queries vault by tag hierarchy → builds a source_map |
+| `scaffold` | interactive back-and-forth to lock framing, contributions, and argument structure before writing |
+| `draft` | writes prose from source_map only — ungrounded sentences flagged `[NEEDS SOURCE]`, never filled |
+| `quality` | strips ai-giveaways, hollow intensifiers, filler transitions, vague claims |
+| `review` | adversarial r2 reviewer loop — severity-rated critiques (minor / major / fatal) + revision |
+| `output` | markdown or functional latex → session, local file, or overleaf via git bridge |
 
 ---
 
-## Installation
+## // prerequisites
 
-### Claude Code
+| tool | repo |
+|------|------|
+| `refhub-cli` | https://github.com/refhub-io/refhub-cli |
+| refhub claude plugin | https://github.com/refhub-io/refhub-claude |
+| refhub codex plugin | https://github.com/refhub-io/refhub-codex |
+
+must be installed and authenticated before use. this skill does not configure them.
+
+---
+
+## // install
+
+### claude code
 
 ```bash
 claude plugin install github:refhub-io/refhub-paper-drafter
 ```
 
-Then invoke with:
+invoke with `/refhub-paper-drafter`
 
-```
-/refhub-paper-drafter
-```
-
-Plugin manifest: `.claude-plugin/plugin.json`
-Instructions file loaded at session start: `CLAUDE.md`
+manifest: `.claude-plugin/plugin.json` — instructions: `CLAUDE.md`
 
 ---
 
-### Codex
+### codex
 
-The repo ships a full Codex plugin manifest (`.codex-plugin/plugin.json`) with the `interface` block Codex needs for its UI (display name, default prompts, category, capabilities).
-
-**Install from GitHub** (when Codex supports GitHub plugin sources):
-
-Add to your `~/.agents/plugins/marketplace.json`:
+**from github** — add to `~/.agents/plugins/marketplace.json`:
 
 ```json
 {
   "name": "refhub-paper-drafter",
-  "source": {
-    "source": "github",
-    "repo": "refhub-io/refhub-paper-drafter"
-  },
-  "policy": {
-    "installation": "AVAILABLE",
-    "authentication": "ON_INSTALL"
-  },
+  "source": { "source": "github", "repo": "refhub-io/refhub-paper-drafter" },
+  "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
   "category": "Productivity"
 }
 ```
 
-**Install locally** (clone):
+**locally** — clone then add to marketplace:
 
 ```bash
 git clone https://github.com/refhub-io/refhub-paper-drafter ~/plugins/refhub-paper-drafter
 ```
 
-Then add to `~/.agents/plugins/marketplace.json`:
-
 ```json
 {
   "name": "refhub-paper-drafter",
-  "source": {
-    "source": "local",
-    "path": "./plugins/refhub-paper-drafter"
-  },
-  "policy": {
-    "installation": "AVAILABLE",
-    "authentication": "ON_INSTALL"
-  },
+  "source": { "source": "local", "path": "./plugins/refhub-paper-drafter" },
+  "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
   "category": "Productivity"
 }
 ```
 
-**Install skill only** (no plugin system):
+**skill only** — no plugin system:
 
 ```bash
-mkdir -p ~/.codex/skills
 cp -r skills/refhub-paper-drafter ~/.codex/skills/
-# or use the cross-runtime path:
-mkdir -p ~/.agents/skills
+# or cross-runtime:
 cp -r skills/refhub-paper-drafter ~/.agents/skills/
 ```
 
-Plugin manifest: `.codex-plugin/plugin.json`
-Instructions file loaded at session start: `AGENTS.md`
+manifest: `.codex-plugin/plugin.json` — instructions: `AGENTS.md`
 
 ---
 
-### Copilot CLI / Gemini CLI
-
-Use the cross-runtime skills path (recognized by both):
+### copilot cli / gemini cli
 
 ```bash
-mkdir -p ~/.agents/skills
 cp -r skills/refhub-paper-drafter ~/.agents/skills/
 ```
 
 ---
 
-### Manual (any harness)
-
-Clone the repo and import the skill from your project's instructions file:
+### any harness (manual)
 
 ```markdown
-# In CLAUDE.md / AGENTS.md / GEMINI.md
 @path/to/refhub-paper-drafter/skills/refhub-paper-drafter/SKILL.md
 ```
 
 ---
 
-## Usage
+## // grounding
 
-When you invoke the skill, the agent will:
+```
+// correct
+[NEEDS SOURCE: interaction cost scales with hierarchy depth]
 
-1. Ask for your local note file paths and RefHub vault tags
-2. Build a SOURCE MAP from all collected material
-3. Work through the scaffold interactively (framing, contributions, argument map, venue)
-4. Ask how you want the output: Markdown or LaTeX, and where (session / file / Overleaf)
-5. Draft section by section, running grounding and quality checks
-6. Run the R2 adversarial review and revise
+// wrong
+interaction cost generally increases as hierarchies become more complex
+```
 
-The draft is gated on the scaffold approval — no prose is written until you confirm the structure.
-
----
-
-## Grounding guarantee
-
-The skill enforces a hard grounding constraint: every sentence in the draft must trace to a SOURCE MAP entry. Sentences without a source get flagged `[NEEDS SOURCE: <claim>]` and surfaced to you for resolution. The agent never fills gaps silently.
-
-`\cite{}` keys in LaTeX output come exclusively from vault entry IDs. No keys are invented.
+every sentence in the draft must trace to a source_map entry. gaps surface as `[NEEDS SOURCE: <claim>]` — the agent never fills them silently. `\cite{}` keys come from vault entry ids only.
 
 ---
 
-## Best practices basis
+## // best practices basis
 
-The writing conventions baked into the scaffold dialogue and quality loop come from structural and rhetorical analysis of best-paper-award winners across HCI and visualization research, covering:
+distilled from best-paper-award winners across hci and visualization research:
 
-- Contribution framing and falsifiability
-- Related work positioning and gap articulation
-- Design requirement labeling (T1–Tn, D1–Dn, RQ1–RQn)
-- Evaluation design and reporting standards
-- Discussion vs. results separation
-- Limitations specificity
+```
+contribution framing   → specific • bounded • falsifiable
+related work           → thread-organized • gap-precise • load-bearing citations
+design requirements    → labeled t1–tn / d1–dn / rq1–rqn • traceable to data
+evaluation             → pre-stated hypotheses • effect sizes • honest negatives
+discussion             → interpretation not re-narration • connect back to requirements
+limitations            → specific • scope vs validity • each implies an open question
+```
 
 ---
 
-## License
+## // license
 
-MIT
+`MIT`
