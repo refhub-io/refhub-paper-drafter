@@ -134,4 +134,4 @@ limitations            → specific • scope vs validity • each implies an op
 
 ## // license
 
-`MIT`
+`gpl`
