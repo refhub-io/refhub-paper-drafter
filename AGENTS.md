@@ -6,7 +6,7 @@ The skill takes scattered notes (local files + RefHub vault queries) and produce
 
 **Invoke it** by asking the agent to draft a paper, or by typing the skill name in your harness.
 
-**Requires:** the `refhub` CLI from `@refhub/cli` — see https://github.com/refhub-io/refhub-cli. For Codex vault operation guidance, see https://github.com/refhub-io/refhub-codex.
+**Requires:** the `refhub` CLI from `@refhub/cli` — see https://github.com/refhub-io/refhub-cli. For vault operation guidance across Claude Code, Codex, and other harnesses, see https://github.com/refhub-io/refhub-skill.
 
 Use the real RefHub CLI flow in the skill:
 

@@ -14,7 +14,7 @@ The following must be installed and authenticated in the user's environment:
 | Tool | Repository |
 |------|-----------|
 | `refhub` CLI (`@refhub/cli`) | https://github.com/refhub-io/refhub-cli |
-| RefHub harness plugin | Claude Code: https://github.com/refhub-io/refhub-claude — Codex: https://github.com/refhub-io/refhub-codex |
+| `refhub-skill` agent skill (Claude Code / Codex / generic harnesses) | https://github.com/refhub-io/refhub-skill |
 
 This skill does not install or configure these tools.
 

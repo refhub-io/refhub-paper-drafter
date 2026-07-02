@@ -26,8 +26,7 @@ agent skill for drafting hci and visualization research papers from a refhub vau
 | tool | repo |
 |------|------|
 | `refhub` CLI (`@refhub/cli`) | https://github.com/refhub-io/refhub-cli |
-| refhub claude plugin | https://github.com/refhub-io/refhub-claude |
-| refhub codex plugin | https://github.com/refhub-io/refhub-codex |
+| `refhub-skill` agent skill (Claude Code / Codex / generic harnesses) | https://github.com/refhub-io/refhub-skill |
 
 must be installed and authenticated before use. this skill does not configure them.
 
