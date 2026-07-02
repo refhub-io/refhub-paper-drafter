@@ -7,8 +7,8 @@
     {
       "name": "refhub-paper-drafter",
       "source": {
-        "source": "local",
-        "path": "./plugins/refhub-paper-drafter"
+        "source": "github",
+        "repo": "refhub-io/refhub-paper-drafter"
       },
       "policy": {
         "installation": "AVAILABLE",
