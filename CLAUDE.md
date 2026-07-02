@@ -6,7 +6,7 @@ This plugin provides the `refhub-paper-drafter` skill for drafting HCI and visua
 
 The skill takes your scattered notes (local files + RefHub vault queries) and produces a grounded manuscript draft modeled on best practices from award-winning HCI and visualization research.
 
-**Requires:** the `refhub` CLI from `@refhub/cli` and the RefHub Claude plugin — see https://github.com/refhub-io/refhub-cli and https://github.com/refhub-io/refhub-claude.
+**Requires:** the `refhub` CLI from `@refhub/cli` and the `refhub-skill` agent skill — see https://github.com/refhub-io/refhub-cli and https://github.com/refhub-io/refhub-skill.
 
 Use the real RefHub CLI flow in the skill:
 

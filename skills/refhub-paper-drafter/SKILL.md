@@ -14,9 +14,55 @@ The following must be installed and authenticated in the user's environment:
 | Tool | Repository |
 |------|-----------|
 | `refhub` CLI (`@refhub/cli`) | https://github.com/refhub-io/refhub-cli |
-| RefHub harness plugin | Claude Code: https://github.com/refhub-io/refhub-claude — Codex: https://github.com/refhub-io/refhub-codex |
+| `refhub-skill` agent skill (Claude Code / Codex / generic harnesses) | https://github.com/refhub-io/refhub-skill |
 
 This skill does not install or configure these tools.
+
+---
+
+## Operating RefHub
+
+This skill only needs **read** access — resolving vaults/tags, searching items, and exporting vault content for the SOURCE MAP. It never writes to RefHub.
+
+**Auth:** set `REFHUB_API_KEY` (scope `vaults:read`; add `vaults:export` if using `refhub export`):
+
+```sh
+export REFHUB_API_KEY=rhk_<publicId>_<secret>
+```
+
+**If the `refhub` CLI is available** (`which refhub` succeeds), use it — it handles auth, formatting, and errors:
+
+```sh
+refhub vaults list
+refhub tags list --vault <vaultId>
+refhub items search --vault <vaultId> --tag <tagId>
+refhub export --vault <vaultId> --format json
+refhub export --vault <vaultId> --format bibtex
+```
+
+Exit codes: `0` success · `1` API error · `2` bad arguments · `3` auth error (missing/invalid key).
+
+**If the CLI is not available**, call the API directly:
+
+```text
+Base URL: https://refhub-api.netlify.app/api/v1
+Authorization: Bearer rhk_<publicId>_<secret>
+
+GET /vaults                                        vaults:read
+GET /vaults/:vaultId/tags                          vaults:read
+GET /vaults/:vaultId/search?tag=&q=&author=&year=  vaults:read
+GET /vaults/:vaultId/export?format=json|bibtex     vaults:export
+```
+
+**Errors:**
+- `401` — missing/invalid API key. Stop, report clearly, ask the user for a valid key. Do not retry with the same key.
+- `403 missing_scope` — report which scope is missing (`vaults:read` or `vaults:export`). Do not attempt a workaround.
+- `404` — the vault/tag/item id is wrong. Verify it. Do not guess a replacement or silently skip it.
+- **Never infer a `vault_id` from a vault name.** Always resolve it from `GET /vaults` (or `refhub vaults list`) first.
+
+Item metadata returned by `search`/`export` includes a free-text `notes` field where present — treat it as a legitimate SOURCE MAP entry (`evidence_type: paraphrase` or `quote`, citing the item), not just title/authors/abstract.
+
+For the full read/write RefHub surface beyond what this skill needs — adding items, managing tags, PDFs, Semantic Scholar enrichment — install [`refhub-skill`](https://github.com/refhub-io/refhub-skill) alongside this plugin. This skill works standalone without it.
 
 ---
 
