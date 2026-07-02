@@ -167,4 +167,4 @@ limitations            → specific • scope vs validity • each implies an op
 
 ## // license
 
-`GPL-3.0-only` — see `LICENSE.md`.
+`gpl`
