@@ -203,7 +203,7 @@ Ask which paper/evaluation types apply. More than one may apply:
 - Benchmark, dataset, or model evaluation
 - Survey, theory, or position paper
 
-For each applicable type, collect the minimum reporting fields before drafting:
+For each applicable type, collect the minimum reporting fields before drafting. Only collect the fields for types the user selected in this step — do not request a type's fields, especially the STAR literature-search protocol, for a paper type where it wasn't selected, even if it seems like generally good methodological rigor:
 - Human-subject work: recruitment, inclusion/exclusion, consent, compensation, demographics, apparatus/materials, procedure, randomization/counterbalancing where applicable, accessibility/accommodation, and ethics/IRB status.
 - Quantitative evaluation: RQs/hypotheses, sample-size rationale or power analysis where applicable, metrics, test/model choice, assumptions, exclusions/missing-data handling, multiple-comparison policy, effect sizes, confidence intervals, and robustness/sensitivity checks.
 - Qualitative evaluation: protocol, participant/context description, coder count, coding procedure, adjudication, reliability/reflexivity stance, theme derivation, quote traceability, and quote privacy/de-identification.
