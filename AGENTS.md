@@ -138,7 +138,13 @@ Draft a numbered contribution list. Each contribution must be:
 - Not a feature listing: not "we present a novel system"
 - Falsifiable: a reader can check whether it was delivered
 
-Verify that each contribution is grounded in the SOURCE MAP.
+**Count guidance:** 3–4 contributions is typical for a full paper. A longer list is a signal to consolidate, not a target to fill toward.
+
+**Component-vs-contribution test:** if a candidate contribution is a design or implementation detail that belongs to another contribution already in the list (an encoding choice, an interaction technique that is part of a system already named), it belongs in that contribution's body-text description as a sub-point — not as its own numbered item.
+
+**Delivered vs. Pending:** a contribution describing work not yet complete (e.g., a study that is designed but not yet run) is allowed — drafting happens before every result exists — but must be tagged `[PENDING]` and paired with an evaluation plan. Ask: "For any contribution that isn't fully delivered yet, how do you plan to evaluate or validate it, and what would make it count as delivered?" Record the answer next to the tagged contribution.
+
+Verify that each contribution is grounded in the SOURCE MAP. Once the Evaluation section is scaffolded (2c–2f), check each contribution against it: fully-delivered (untagged) contributions must have matching evidence there; `[PENDING]`-tagged contributions are expected not to have evidence yet — that is what the tag communicates, not a defect to fix.
 
 **2c. Section Order**
 Propose a structure based on the contribution type:
@@ -189,6 +195,16 @@ Record the selection as `page_budget: {content: N, references: M, total: N+M or 
 
 If the target venue isn't in this table, or the user isn't certain of the current limits, ask them to paste the relevant CFP page-limit line rather than guessing — page-limit rules change yearly and vary by venue. Treat an assumed number as unverified risk, the same way an ungrounded claim would be treated in the Core Constraint.
 
+**Best-effort live CFP check.** For venues with a known, stable CFP/guidelines URL pattern (IEEE VIS: `https://ieeevis.org/year/<year>/info/call-participation/...`; EuroVis: `https://eurovis.org.uk/author-guidelines/`), you may verify the static table against the venue's current page instead of relying on the table alone:
+
+1. Ask which submission year/cycle the user is targeting if not already stated — don't assume the current calendar year is the submission year; venue cycles often run ahead (e.g. a 2026-dated CFP can govern work submitted in late 2025 or early 2026).
+2. `WebFetch` the relevant page once per venue selection — don't re-fetch on every subsequent scaffold question.
+3. If a page limit is found, show the user both figures: the static table value and the fetched value, with a quoted snippet and the source URL, and ask which to record as `page_budget`. If they match, say so briefly and proceed with the static value without forcing a redundant confirmation.
+4. Treat any fetch failure, timeout, or "no clear page-limit statement found" as a silent no-op — fall back to the static table and the existing "ask the user to paste the CFP line" prompt. Never block Phase 2h on a failed fetch, and never present a failed or ambiguous fetch as if it confirmed anything.
+5. For venues not in the static table, skip the fetch entirely — don't guess a URL for an unknown venue.
+
+State the reliability caveat whenever a fetch is used: CFP pages vary in structure year to year and venue to venue (HTML, JS-rendered, or PDF-only); a successful fetch is a corroboration aid, not a guarantee — the user's confirmation is what's actually recorded.
+
 **2i. Paper and Evaluation Type**
 Ask which paper/evaluation types apply. More than one may apply:
 - Design study or design probe
@@ -200,7 +216,7 @@ Ask which paper/evaluation types apply. More than one may apply:
 - Benchmark, dataset, or model evaluation
 - Survey, theory, or position paper
 
-For each applicable type, collect the minimum reporting fields before drafting:
+For each applicable type, collect the minimum reporting fields before drafting. Only collect the fields for types the user selected in this step — do not request a type's fields, especially the STAR literature-search protocol, for a paper type where it wasn't selected, even if it seems like generally good methodological rigor:
 - Human-subject work: recruitment, inclusion/exclusion, consent, compensation, demographics, apparatus/materials, procedure, randomization/counterbalancing where applicable, accessibility/accommodation, and ethics/IRB status.
 - Quantitative evaluation: RQs/hypotheses, sample-size rationale or power analysis where applicable, metrics, test/model choice, assumptions, exclusions/missing-data handling, multiple-comparison policy, effect sizes, confidence intervals, and robustness/sensitivity checks.
 - Qualitative evaluation: protocol, participant/context description, coder count, coding procedure, adjudication, reliability/reflexivity stance, theme derivation, quote traceability, and quote privacy/de-identification.
@@ -221,7 +237,10 @@ FIGURE/TABLE INVENTORY ENTRY:
   caption_takeaway: <one-sentence takeaway>
   referenced_in: <section>
   alt_text:      <accessibility description or "needed">
+  column_span:   [single | double | undecided]
 ```
+
+For LaTeX two-column templates, mark `column_span: double` (`\begin{figure*}` instead of `\begin{figure}`) when the content warrants it: multi-panel comparisons, wide timelines/sequences, network/map diagrams, matrices/heatmaps with many columns, or full-UI screenshots. Note that `figure*` floats to the top or bottom of a page in a two-column layout — it does not render inline where placed in the source. A late change to `column_span` affects the Phase 4 length estimate; re-check the length triage (Phase 4) when it changes after drafting has started.
 
 **Scaffold gate:** Present the complete scaffold as a structured summary. Ask: "Does this look right? Say 'proceed' to begin drafting, or tell me what to adjust."
 
@@ -417,6 +436,7 @@ Required gates:
 - **Reproducibility/materials:** data, code, stimuli, protocols, analysis scripts/notebooks, preregistration, supplemental files, and licenses are available or their absence is justified.
 - **Venue/template:** target venue, template status, page/word limit, anonymization requirement, metadata, references, appendix/supplement rules, and required checklist status are recorded.
 - **Length & venue budget:** manuscript fits the `page_budget` recorded in Phase 2h (content and references measured separately where the venue splits them); the Phase 4 length-triage status is `within budget`; every supplementary-material pointer resolves to a materialized entry (a real `file` + `label`, not just a description) in the supplementary outline; no `essential`-tier content was deferred to supplementary material.
+- **Contributions:** no contribution-list entry carries an unresolved `[PENDING]` tag for a `ready` status; `ready-with-risks` or `not-ready` may still carry unresolved `[PENDING]` tags if the user explicitly accepts that risk.
 - **Method/evaluation type:** all fields from Phase 2i applicable to the paper type are complete or explicitly marked unavailable with consequences.
 - **HCI/visualization validity:** address construct, internal, external, ecological, conclusion, design-study, task/data abstraction, baseline, visual encoding, interaction, accessibility, and scalability/performance validity where applicable.
 - **Figures/tables:** every figure/table has an inventory entry, source IDs, takeaway caption, placeholder status, and alt text.
