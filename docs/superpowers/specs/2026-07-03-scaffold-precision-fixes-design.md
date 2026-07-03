@@ -1,6 +1,6 @@
 # Scaffold precision fixes — design
 
-Three corrections to `skills/refhub-paper-drafter/SKILL.md`, found from real usage of the skill (post PR #4) rather than from re-reading the spec cold.
+Four corrections to `skills/refhub-paper-drafter/SKILL.md`, found from real usage of the skill (post PR #4) rather than from re-reading the spec cold.
 
 ## 1. Literature-search-methodology scope leak (Phase 2i)
 
