@@ -243,11 +243,25 @@ DESTINATION:
   (1) In-session (stream to conversation)
   (2) Local file — provide path
   (3) Overleaf — provide Git URL (https://git.overleaf.com/<project-id>)
+
+SUPPLEMENTARY MATERIAL FORM (ask only if DESTINATION is 2 or 3):
+  (i)   Separate document — its own file, compiled/submitted independently
+        (typical for IEEE VIS/EuroVis supplemental PDFs)
+  (ii)  In-PDF appendix — a section appended to the same main document
+        (some venues now allow this with cross-linking — confirm the target
+        venue actually permits it before choosing this over (i))
+  (iii) Outline only — no file; report the SUPPLEMENTARY MATERIAL ENTRY
+        outline in-session with the moved content inline
 ```
+
+For local file / Overleaf destinations, before writing anything:
+1. List the target directory (or cloned Overleaf project root) and look for an existing supplementary/appendix file — common names: `supplement.tex`, `supplemental.tex`, `appendix.tex`, `appendices.tex`, `sm.tex`, `si.tex`, or Markdown equivalents.
+2. If one exists, treat it as the project's real template: preserve its preamble/structure and append new sections into it. Never overwrite it or scaffold a competing one.
+3. If none exists and form (i) or (ii) was chosen, scaffold a minimal one — matching the main document's class for an in-PDF appendix, or a lightweight standalone class for a separate document — and confirm the scaffold with the user before writing further content into it.
 
 For Overleaf (option 3):
 1. Clone the project into a temporary directory
-2. Write or overwrite the main `.tex` file
+2. Write or overwrite the main `.tex` file, and the supplementary file identified/scaffolded above if applicable
 3. `git add -A && git commit -m "Initial draft — refhub-paper-drafter" && git push`
 4. Report the push result; surface authentication errors explicitly
 
@@ -316,13 +330,20 @@ Run this after the full draft is assembled and before the R2 loop. Re-run it aft
    b. Move `supportable` material to supplementary material — never delete it. Replace it in the main text with a one-sentence pointer: "Full <protocol/results/derivation> in supplementary material (Section S<N>)."
    c. Only cut `cuttable` material outright.
    d. Never move `essential` material to supplementary material just to hit a page count. If the paper still doesn't fit after (a)–(c), say so explicitly and ask the user whether to trim scope/contributions or target a longer-format venue — do not silently over-cut essential content.
-4. **Maintain a supplementary material outline** alongside the main draft:
+4. **Materialize moved content — don't just log it.** Follow the SUPPLEMENTARY MATERIAL FORM chosen in the Phase 3 output-routing step:
+   - **Separate document / in-PDF appendix:** write the actual moved prose (not a summary) into the supplementary file identified or scaffolded in Phase 3, under a heading matching its `S-###` id, in the venue's expected numbering (e.g. "S1", "Appendix A"). Update the pointer sentence left in the main draft to reference that exact label.
+   - **Outline only (in-session, no file destination):** render the full moved prose inline in the outline entry, not a one-line description — the user still needs the actual content somewhere, not just a record that something moved.
+   - Never invent a supplementary template from scratch when the target project already has one — reuse and extend it (Phase 3 detection step), the same way an ungrounded claim is never filled in with a plausible-sounding guess.
+
+   Track every move in the outline:
 
 ```
 SUPPLEMENTARY MATERIAL ENTRY:
   id:            S-001
   moved_from:    <main-paper section/paragraph id>
   content:       <one-line description>
+  file:          <path to supplementary file, or "in-session only">
+  label:         <label used at the destination, e.g. "S1" or "Appendix A">
   source_ids:    <SM-### list>
   referenced_at: <main-paper location of the pointer sentence>
   rationale:     <why it's supportable, not essential>
@@ -398,7 +419,7 @@ Required gates:
 - **AI disclosure:** include a venue-appropriate statement that an AI drafting assistant was used, what it did, and that authors verified sources and claims.
 - **Reproducibility/materials:** data, code, stimuli, protocols, analysis scripts/notebooks, preregistration, supplemental files, and licenses are available or their absence is justified.
 - **Venue/template:** target venue, template status, page/word limit, anonymization requirement, metadata, references, appendix/supplement rules, and required checklist status are recorded.
-- **Length & venue budget:** manuscript fits the `page_budget` recorded in Phase 2h (content and references measured separately where the venue splits them); the Phase 4 length-triage status is `within budget`; every supplementary-material pointer resolves to an entry in the supplementary outline; no `essential`-tier content was deferred to supplementary material.
+- **Length & venue budget:** manuscript fits the `page_budget` recorded in Phase 2h (content and references measured separately where the venue splits them); the Phase 4 length-triage status is `within budget`; every supplementary-material pointer resolves to a materialized entry (a real `file` + `label`, not just a description) in the supplementary outline; no `essential`-tier content was deferred to supplementary material.
 - **Method/evaluation type:** all fields from Phase 2i applicable to the paper type are complete or explicitly marked unavailable with consequences.
 - **HCI/visualization validity:** address construct, internal, external, ecological, conclusion, design-study, task/data abstraction, baseline, visual encoding, interaction, accessibility, and scalability/performance validity where applicable.
 - **Figures/tables:** every figure/table has an inventory entry, source IDs, takeaway caption, placeholder status, and alt text.
