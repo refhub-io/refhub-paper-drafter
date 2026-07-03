@@ -230,6 +230,10 @@ FIGURE/TABLE INVENTORY ENTRY:
   caption_takeaway: <one-sentence takeaway>
   referenced_in: <section>
   alt_text:      <accessibility description or "needed">
+  column_span:   [single | double | undecided]
+```
+
+For LaTeX two-column templates, mark `column_span: double` (`\begin{figure*}` instead of `\begin{figure}`) when the content warrants it: multi-panel comparisons, wide timelines/sequences, network/map diagrams, matrices/heatmaps with many columns, or full-UI screenshots. Note that `figure*` floats to the top or bottom of a page in a two-column layout — it does not render inline where placed in the source. A late change to `column_span` affects the Phase 4 length estimate; re-check the length triage (Phase 4) when it changes after drafting has started.
 ```
 
 **Scaffold gate:** Present the complete scaffold as a structured summary. Ask: "Does this look right? Say 'proceed' to begin drafting, or tell me what to adjust."
