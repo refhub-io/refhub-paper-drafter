@@ -174,7 +174,25 @@ Ask the user which venue they are targeting (name or describe it). Then ask:
 - Common templates: `acmart` (sigconf, manuscript, etc.), `IEEEtran` (journal, conference), custom.
 - If the user doesn't know, default to Markdown output until they confirm.
 
-**2h. Paper and Evaluation Type**
+**2h. Paper Type and Length Budget**
+
+Ask the user which paper type they are targeting, since it sets a hard page/space budget that governs what content the manuscript can afford and what must move to supplementary material in Phase 4.
+
+| Venue / track | Paper type | Content budget | References | Total | Notes |
+|---|---|---|---|---|---|
+| IEEE VIS (TVCG special issue) | Full paper | 9 pages | up to 2 pages (pointers only, not the material itself) | 11 pages | Non-reference content beyond page 9 risks desk rejection |
+| IEEE VIS | Short paper | 4 pages | up to 1 page | 5 pages | |
+| IEEE TVCG (regular/direct journal submission, outside the VIS cycle) | Journal paper | ~12 pages, author's disposal | counted within the total, not separate | ~12 pages | This figure and the overlength-fee policy shift; confirm against the current TVCG author guidelines before relying on it |
+| EuroVis / CGF | Full paper | 10 pages (incl. figures, acknowledgements) | up to 2 pages | ~12 pages | References excluded from the 10-page count |
+| EuroVis / CGF | Short paper | 4 pages | +1 page | 5 pages | |
+| EuroVis / CGF (STAR) | Survey / State-of-the-Art Report | ~20 pages is the norm, not a hard cap | not capped | — | Initial sketch stage is 2 pages. Literature-search methodology is a required, load-bearing section — see the Survey/STAR reporting fields below |
+| Workshop (venue-specific) | Workshop paper | ~6 pages is typical | varies | — | Formats vary widely by workshop; confirm against that workshop's own CFP rather than assuming VIS/EuroVis defaults |
+
+Record the selection as `page_budget: {content: N, references: M, total: N+M or "uncapped"}` and carry it into Phase 3 drafting and the Phase 4 length triage.
+
+If the target venue isn't in this table, or the user isn't certain of the current limits, ask them to paste the relevant CFP page-limit line rather than guessing — page-limit rules change yearly and vary by venue. Treat an assumed number as unverified risk, the same way an ungrounded claim would be treated in the Core Constraint.
+
+**2i. Paper and Evaluation Type**
 Ask which paper/evaluation types apply. More than one may apply:
 - Design study or design probe
 - System or technique paper
@@ -192,8 +210,9 @@ For each applicable type, collect the minimum reporting fields before drafting:
 - Expert review: expert domains, number of experts, session format, prompts/tasks, analysis/synthesis method, and conflict-of-interest considerations.
 - Design study/visualization work: domain collaborator roles, problem characterization, data/task abstraction, visual encoding and interaction rationale, baseline selection/fairness, scalability/performance, ecological validity, accessibility, and deployment/reflection boundaries.
 - Dataset/benchmark work: dataset provenance, inclusion/exclusion, licensing, documentation, quality checks, representativeness/bias, de-identification/privacy, splits/tasks/metrics, and availability constraints.
+- Survey / State-of-the-Art report (STAR): literature-search protocol (databases/venues queried, search terms, date range, inclusion/exclusion criteria), corpus size before and after filtering, the taxonomy or classification scheme and how it was derived, a coverage-validation step (how completeness was checked), and an explicit statement of the survey's contribution beyond a bibliography — a taxonomy, a gap analysis, a research agenda.
 
-**2i. Figure and Table Inventory**
+**2j. Figure and Table Inventory**
 Create an inventory before drafting:
 
 ```
@@ -224,11 +243,25 @@ DESTINATION:
   (1) In-session (stream to conversation)
   (2) Local file — provide path
   (3) Overleaf — provide Git URL (https://git.overleaf.com/<project-id>)
+
+SUPPLEMENTARY MATERIAL FORM (ask only if DESTINATION is 2 or 3):
+  (i)   Separate document — its own file, compiled/submitted independently
+        (typical for IEEE VIS/EuroVis supplemental PDFs)
+  (ii)  In-PDF appendix — a section appended to the same main document
+        (some venues now allow this with cross-linking — confirm the target
+        venue actually permits it before choosing this over (i))
+  (iii) Outline only — no file; report the SUPPLEMENTARY MATERIAL ENTRY
+        outline in-session with the moved content inline
 ```
+
+For local file / Overleaf destinations, before writing anything:
+1. List the target directory (or cloned Overleaf project root) and look for an existing supplementary/appendix file — common names: `supplement.tex`, `supplemental.tex`, `appendix.tex`, `appendices.tex`, `sm.tex`, `si.tex`, or Markdown equivalents.
+2. If one exists, treat it as the project's real template: preserve its preamble/structure and append new sections into it. Never overwrite it or scaffold a competing one.
+3. If none exists and form (i) or (ii) was chosen, scaffold a minimal one — matching the main document's class for an in-PDF appendix, or a lightweight standalone class for a separate document — and confirm the scaffold with the user before writing further content into it.
 
 For Overleaf (option 3):
 1. Clone the project into a temporary directory
-2. Write or overwrite the main `.tex` file
+2. Write or overwrite the main `.tex` file, and the supplementary file identified/scaffolded above if applicable
 3. `git add -A && git commit -m "Initial draft — refhub-paper-drafter" && git push`
 4. Report the push result; surface authentication errors explicitly
 
@@ -281,7 +314,58 @@ Require:
 
 ---
 
-## Phase 4 — R2 Hostile Reviewer Loop
+## Phase 4 — Length and Supplementary Material Triage
+
+Run this after the full draft is assembled and before the R2 loop. Re-run it after any Phase 5 (R2) revision that adds or restructures content — a fix for one fatal finding can push the manuscript back over budget.
+
+**Goal:** fit the manuscript inside the `page_budget` recorded in Phase 2h without cutting content the venue requires, or content the SOURCE MAP can't support anywhere else.
+
+1. **Measure.** For LaTeX output, build and check the real page count. For Markdown or in-session drafts, estimate from word count (roughly 450–550 words per two-column page as a rough proxy) and say plainly that it is an estimate, not a typeset count.
+2. **Classify every section, subsection, figure, and table into one of three tiers:**
+   - `essential` — required to establish a contribution or pass a Phase 6 gate (core method, primary result, ethics/IRB statement).
+   - `supportable` — strengthens the paper, but the core claims survive without it in the main body (extended examples, secondary analyses, full parameter sweeps, extended related-work discussion, pilot detail, full interview protocol, raw qualitative coding tables).
+   - `cuttable` — can be shortened or removed with no loss to the argument (redundant transitions, duplicated figures, verbose setup).
+3. **If over budget, act in this order:**
+   a. Tighten prose using the Loop B patterns before cutting content.
+   b. Move `supportable` material to supplementary material — never delete it. Replace it in the main text with a one-sentence pointer: "Full <protocol/results/derivation> in supplementary material (Section S<N>)."
+   c. Only cut `cuttable` material outright.
+   d. Never move `essential` material to supplementary material just to hit a page count. If the paper still doesn't fit after (a)–(c), say so explicitly and ask the user whether to trim scope/contributions or target a longer-format venue — do not silently over-cut essential content.
+4. **Materialize moved content — don't just log it.** Follow the SUPPLEMENTARY MATERIAL FORM chosen in the Phase 3 output-routing step:
+   - **Separate document / in-PDF appendix:** write the actual moved prose (not a summary) into the supplementary file identified or scaffolded in Phase 3, under a heading matching its `S-###` id, in the venue's expected numbering (e.g. "S1", "Appendix A"). Update the pointer sentence left in the main draft to reference that exact label.
+   - **Outline only (in-session, no file destination):** render the full moved prose inline in the outline entry, not a one-line description — the user still needs the actual content somewhere, not just a record that something moved.
+   - Never invent a supplementary template from scratch when the target project already has one — reuse and extend it (Phase 3 detection step), the same way an ungrounded claim is never filled in with a plausible-sounding guess.
+
+   Track every move in the outline:
+
+```
+SUPPLEMENTARY MATERIAL ENTRY:
+  id:            S-001
+  moved_from:    <main-paper section/paragraph id>
+  content:       <one-line description>
+  file:          <path to supplementary file, or "in-session only">
+  label:         <label used at the destination, e.g. "S1" or "Appendix A">
+  source_ids:    <SM-### list>
+  referenced_at: <main-paper location of the pointer sentence>
+  rationale:     <why it's supportable, not essential>
+```
+
+5. **Reconcile references separately from content** at venues that cap them separately (VIS full/short, EuroVis full/short). A paper can be within its content budget and still fail on an oversized reference list — trim citations that aren't load-bearing (see the Related Work best practice) before cutting main content to compensate.
+6. **Survey / STAR reports:** the ~20-page CGF convention is a norm, not a hard cap. Don't force-fit a survey into a shorter budget — instead confirm the corpus breadth and taxonomy depth match the space the user intends to use.
+7. **Report the outcome:**
+
+```
+LENGTH TRIAGE
+Venue/type: <e.g. IEEE VIS full paper>
+Budget: <content>p content + <refs>p references (<total> total, or "uncapped")
+Estimated current length: <content>p content + <refs>p references
+Status: [within budget | over — moved N items to supplementary | over — needs scope decision]
+Moved to supplementary: <S-### list or "none">
+Reference list: <count> entries, <est. pages>
+```
+
+---
+
+## Phase 5 — R2 Hostile Reviewer Loop
 
 After the full draft is assembled, adopt the R2 persona and attack the paper.
 
@@ -295,6 +379,7 @@ After the full draft is assembled, adopt the R2 persona and attack the paper.
 - **Over-interpretation:** Does the discussion claim more than the evidence allows?
 - **Limitations:** Are significant validity threats omitted or understated?
 - **Related work:** Missing influential citations, mischaracterized prior work
+- **Length/scope discipline:** Was essential material improperly deferred to supplementary in Phase 4 to hit the page budget? Conversely, is the paper padded or under-length for the contribution it claims?
 
 **Output format:**
 
@@ -318,9 +403,11 @@ Severity:
 
 Do not present a draft as submission-ready while any fatal critique is unresolved. Major critiques may be explicitly deferred only if the final readiness report marks the manuscript "not submission-ready" or "submission-ready with unresolved major risk" and explains the risk.
 
+If resolving a critique adds or restructures content, re-run Phase 4 (Length and Supplementary Material Triage) before moving on.
+
 ---
 
-## Phase 5 — Submission Readiness Gate
+## Phase 6 — Submission Readiness Gate
 
 Before final output, produce a readiness report. If any required gate fails, say so plainly and mark the manuscript **not submission-ready**.
 
@@ -332,7 +419,8 @@ Required gates:
 - **AI disclosure:** include a venue-appropriate statement that an AI drafting assistant was used, what it did, and that authors verified sources and claims.
 - **Reproducibility/materials:** data, code, stimuli, protocols, analysis scripts/notebooks, preregistration, supplemental files, and licenses are available or their absence is justified.
 - **Venue/template:** target venue, template status, page/word limit, anonymization requirement, metadata, references, appendix/supplement rules, and required checklist status are recorded.
-- **Method/evaluation type:** all fields from Phase 2h applicable to the paper type are complete or explicitly marked unavailable with consequences.
+- **Length & venue budget:** manuscript fits the `page_budget` recorded in Phase 2h (content and references measured separately where the venue splits them); the Phase 4 length-triage status is `within budget`; every supplementary-material pointer resolves to a materialized entry (a real `file` + `label`, not just a description) in the supplementary outline; no `essential`-tier content was deferred to supplementary material.
+- **Method/evaluation type:** all fields from Phase 2i applicable to the paper type are complete or explicitly marked unavailable with consequences.
 - **HCI/visualization validity:** address construct, internal, external, ecological, conclusion, design-study, task/data abstraction, baseline, visual encoding, interaction, accessibility, and scalability/performance validity where applicable.
 - **Figures/tables:** every figure/table has an inventory entry, source IDs, takeaway caption, placeholder status, and alt text.
 - **Declarations:** funding, conflicts of interest, acknowledgments, author contributions where required, and data/materials availability statement.
