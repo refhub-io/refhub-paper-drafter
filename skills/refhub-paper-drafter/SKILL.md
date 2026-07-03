@@ -198,6 +198,16 @@ Record the selection as `page_budget: {content: N, references: M, total: N+M or 
 
 If the target venue isn't in this table, or the user isn't certain of the current limits, ask them to paste the relevant CFP page-limit line rather than guessing — page-limit rules change yearly and vary by venue. Treat an assumed number as unverified risk, the same way an ungrounded claim would be treated in the Core Constraint.
 
+**Best-effort live CFP check.** For venues with a known, stable CFP/guidelines URL pattern (IEEE VIS: `https://ieeevis.org/year/<year>/info/call-participation/...`; EuroVis: `https://eurovis.org.uk/author-guidelines/`), you may verify the static table against the venue's current page instead of relying on the table alone:
+
+1. Ask which submission year/cycle the user is targeting if not already stated — don't assume the current calendar year is the submission year; venue cycles often run ahead (e.g. a 2026-dated CFP can govern work submitted in late 2025 or early 2026).
+2. `WebFetch` the relevant page once per venue selection — don't re-fetch on every subsequent scaffold question.
+3. If a page limit is found, show the user both figures: the static table value and the fetched value, with a quoted snippet and the source URL, and ask which to record as `page_budget`. If they match, say so briefly and proceed with the static value without forcing a redundant confirmation.
+4. Treat any fetch failure, timeout, or "no clear page-limit statement found" as a silent no-op — fall back to the static table and the existing "ask the user to paste the CFP line" prompt. Never block Phase 2h on a failed fetch, and never present a failed or ambiguous fetch as if it confirmed anything.
+5. For venues not in the static table, skip the fetch entirely — don't guess a URL for an unknown venue.
+
+State the reliability caveat whenever a fetch is used: CFP pages vary in structure year to year and venue to venue (HTML, JS-rendered, or PDF-only); a successful fetch is a corroboration aid, not a guarantee — the user's confirmation is what's actually recorded.
+
 **2i. Paper and Evaluation Type**
 Ask which paper/evaluation types apply. More than one may apply:
 - Design study or design probe
