@@ -34,6 +34,24 @@ e. **Phase 6 gate addition.** The Submission Readiness Gate checks for any remai
 
 **Fix:** add a `column_span: [single | double | undecided]` field to the `FIGURE/TABLE INVENTORY ENTRY` schema in Phase 2j, with heuristics for when `double` is likely warranted: multi-panel comparisons, wide timelines/sequences, network/map diagrams, matrices/heatmaps with many columns, full-UI screenshots. Note in the schema that `\begin{figure*}` floats to the top/bottom of a page in a two-column layout (not inline where placed in source) — this affects the Phase 4 length estimate, so a late change to `column_span` should trigger a re-check of the length triage (cross-reference from Phase 4, not a new phase).
 
+## 4. Best-effort live CFP check (Phase 2h)
+
+**Motivation:** the Phase 2h page-budget table is a static snapshot and says so ("page-limit rules change yearly... treat an assumed number as unverified risk"). For venues already in the table, the agent can try to verify the current year's limit against the venue's live CFP/author-guidelines page instead of relying purely on the static table or a user-pasted line.
+
+**Fix — extend Phase 2h:**
+
+a. **Scope:** only attempt this for venues with a known, stable CFP/guidelines URL pattern already implied by the static table (IEEE VIS `ieeevis.org/year/<year>/info/call-participation/...`, EuroVis `eurovis.org.uk/author-guidelines/`). For venues not in the table, skip the fetch entirely and keep the existing "ask the user to paste the CFP line" fallback — don't guess a URL for an unknown venue.
+
+b. **Year:** ask the user which submission year/cycle they're targeting if not already stated; don't assume the current calendar year is the submission year (cycles run ahead — e.g., a 2026-dated CFP often governs work submitted in late 2025 or early 2026).
+
+c. **Fetch and compare, never silently override.** `WebFetch` the relevant page. If a page limit is found and it differs from — or confirms — the static table value, show the user both: the static table value and the fetched value with a quoted snippet and the source URL, and ask which to record as `page_budget`. If they match, say so briefly and proceed with the static value (no need to force a redundant confirmation click).
+
+d. **Failure handling:** treat any fetch failure, timeout, ambiguous page structure, or "can't find a clear page-limit statement" as a silent no-op — fall back to the static table + existing user-paste prompt. Never block Phase 2h on a failed fetch, and never present a failed/ambiguous fetch as if it confirmed anything.
+
+e. **Reliability caveat, stated to the user whenever a fetch is used:** CFP pages vary in structure year to year and venue to venue (HTML, JS-rendered, or PDF-only); a successful fetch is a corroboration aid, not a guarantee — the user's own confirmation is still what's recorded.
+
+f. **Frequency:** attempt the fetch once per venue selection in a session; don't re-fetch on every subsequent scaffold question.
+
 ## Scope
 
-Documentation-only change to one file (`SKILL.md`) plus the mirrored `AGENTS.md` regeneration and a version bump (`1.1.0` → `1.2.0`) across the three plugin manifests, matching the pattern established in PR #4. No code, no new phases — all three fixes land inside existing phases (2b, 2i, 2j, with cross-references from 4 and 6).
+Documentation-only change to one file (`SKILL.md`) plus the mirrored `AGENTS.md` regeneration and a version bump (`1.1.0` → `1.2.0`) across the three plugin manifests, matching the pattern established in PR #4. No code, no new phases — all four fixes land inside existing phases (2b, 2h, 2i, 2j, with cross-references from 4 and 6).
