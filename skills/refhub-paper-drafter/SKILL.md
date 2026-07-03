@@ -141,7 +141,13 @@ Draft a numbered contribution list. Each contribution must be:
 - Not a feature listing: not "we present a novel system"
 - Falsifiable: a reader can check whether it was delivered
 
-Verify that each contribution is grounded in the SOURCE MAP.
+**Count guidance:** 3–4 contributions is typical for a full paper. A longer list is a signal to consolidate, not a target to fill toward.
+
+**Component-vs-contribution test:** if a candidate contribution is a design or implementation detail that belongs to another contribution already in the list (an encoding choice, an interaction technique that is part of a system already named), it belongs in that contribution's body-text description as a sub-point — not as its own numbered item.
+
+**Delivered vs. Pending:** a contribution describing work not yet complete (e.g., a study that is designed but not yet run) is allowed — drafting happens before every result exists — but must be tagged `[PENDING]` and paired with an evaluation plan. Ask: "For any contribution that isn't fully delivered yet, how do you plan to evaluate or validate it, and what would make it count as delivered?" Record the answer next to the tagged contribution.
+
+Verify that each contribution is grounded in the SOURCE MAP. Once the Evaluation section is scaffolded (2c–2f), check each contribution against it: fully-delivered (untagged) contributions must have matching evidence there; `[PENDING]`-tagged contributions are expected not to have evidence yet — that is what the tag communicates, not a defect to fix.
 
 **2c. Section Order**
 Propose a structure based on the contribution type:
@@ -420,6 +426,7 @@ Required gates:
 - **Reproducibility/materials:** data, code, stimuli, protocols, analysis scripts/notebooks, preregistration, supplemental files, and licenses are available or their absence is justified.
 - **Venue/template:** target venue, template status, page/word limit, anonymization requirement, metadata, references, appendix/supplement rules, and required checklist status are recorded.
 - **Length & venue budget:** manuscript fits the `page_budget` recorded in Phase 2h (content and references measured separately where the venue splits them); the Phase 4 length-triage status is `within budget`; every supplementary-material pointer resolves to a materialized entry (a real `file` + `label`, not just a description) in the supplementary outline; no `essential`-tier content was deferred to supplementary material.
+- **Contributions:** no contribution-list entry carries an unresolved `[PENDING]` tag for a `ready` status; `ready-with-risks` or `not-ready` may still carry unresolved `[PENDING]` tags if the user explicitly accepts that risk.
 - **Method/evaluation type:** all fields from Phase 2i applicable to the paper type are complete or explicitly marked unavailable with consequences.
 - **HCI/visualization validity:** address construct, internal, external, ecological, conclusion, design-study, task/data abstraction, baseline, visual encoding, interaction, accessibility, and scalability/performance validity where applicable.
 - **Figures/tables:** every figure/table has an inventory entry, source IDs, takeaway caption, placeholder status, and alt text.
