@@ -307,7 +307,7 @@ For Overleaf (option 3):
 ### Drafting rule
 
 For each section in scaffold order:
-1. Draft prose using only SOURCE MAP entries + the scaffold argument map
+1. Draft prose using only SOURCE MAP entries + the scaffold argument map. Where a RELATION MAP entry was cited in the Phase 2d/2e scaffold for this section, its `contradicts`/`extends`/`builds_on` relationship can become actual prose (e.g. "prior work assumes X; we relax X because Y"), not just backstage bookkeeping — update that RELATION MAP entry's `usage` field to the section it landed in.
 2. Run Loop A (grounding check)
 3. Run Loop B (writing quality)
 4. Present the polished section; accept feedback before moving to the next
@@ -413,7 +413,7 @@ After the full draft is assembled, adopt the R2 persona and attack the paper.
 - **Evaluation validity:** Sample size, task selection, participant diversity, ecological validity
 - **Over-interpretation:** Does the discussion claim more than the evidence allows?
 - **Limitations:** Are significant validity threats omitted or understated?
-- **Related work:** Missing influential citations, mischaracterized prior work
+- **Related work:** Missing influential citations, mischaracterized prior work. Scan the RELATION MAP for entries still marked `usage: not yet used` — for each, check whether it plausibly bears on a claim already in the draft; if so, flag it the same way an ungrounded claim gets flagged in Loop A, rather than leaving it silently unused.
 - **Length/scope discipline:** Was essential material improperly deferred to supplementary in Phase 4 to hit the page budget? Conversely, is the paper padded or under-length for the contribution it claims?
 
 **Output format:**
