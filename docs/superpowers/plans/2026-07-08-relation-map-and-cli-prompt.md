@@ -25,7 +25,7 @@
 - Modify: `skills/refhub-paper-drafter/SKILL.md:96-123` (Phase 1, after the SOURCE MAP block)
 
 **Interfaces:**
-- Produces: a `RELATION MAP ENTRY` schema block (fields: `id`, `from_item`, `to_item`, `relation_type`, `usage`) that Tasks 2 and 3 will reference by name. The `usage` field's unassigned/default value is literally the string `"not yet used"` — Task 3's Phase 5 step scans for exactly that string, so this exact wording must be preserved.
+- Produces: a `RELATION MAP ENTRY` schema block (fields: `id`, `from_item`, `to_item`, `relation_type`, `usage`) that Tasks 2 and 3 will reference by name. The `usage` field's unassigned/default value is literally `not yet used` (unquoted, matching the schema's convention for other field values) — Task 3's Phase 5 step scans for exactly that string, so this exact wording must be preserved.
 
 - [ ] **Step 1: Add the RELATION MAP build step and schema**
 
@@ -167,7 +167,7 @@ git commit -m "Reference the RELATION MAP from Phase 2d and 2e"
 - Modify: `skills/refhub-paper-drafter/SKILL.md:288-296` (Phase 3, "Drafting rule"), `skills/refhub-paper-drafter/SKILL.md:393-401` (Phase 5, "Attack surface")
 
 **Interfaces:**
-- Consumes: `RELATION MAP ENTRY` schema, and the exact string `"not yet used"` as the unassigned-`usage` sentinel, from Task 1.
+- Consumes: `RELATION MAP ENTRY` schema, and the exact string `not yet used` (unquoted) as the unassigned-`usage` sentinel, from Task 1.
 
 - [ ] **Step 1: Note in Phase 3 that RELATION MAP entries can become cited prose**
 
