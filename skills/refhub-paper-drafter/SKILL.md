@@ -176,13 +176,14 @@ Justify the order against the contributions.
 For each section:
 - What is the one key claim this section must establish?
 - Which SOURCE MAP entries (by ID) support that claim?
+- If a RELATION MAP entry (by ID) strengthens the claim — e.g. justifying why this section addresses a gap relative to a specific prior item — cite it alongside the SOURCE MAP entries and set that RELATION MAP entry's `usage` field.
 - Flag any section with fewer than 2 supporting entries — surface to user before drafting.
 
 **2e. Related Work Positioning**
-From vault tags:
-- Which intellectual threads does this work build on?
+From vault tags and the RELATION MAP:
+- Which intellectual threads does this work build on? Use tag co-occurrence as a starting signal, but check the RELATION MAP for `cites`/`extends`/`builds_on`/`contradicts`/`reviews`/`related` entries between SOURCE MAP items in scope — an actual relation is stronger, more precise positioning evidence than tag co-occurrence alone.
 - For each thread: what does prior work achieve, and what does it leave open?
-- State the gap precisely: "Prior work assumes X; we relax X because Y (SM-###)"
+- State the gap precisely: "Prior work assumes X; we relax X because Y (SM-###)" — where a RELATION MAP entry supports the gap statement (e.g. a `contradicts` or `extends` relation), cite it too: "...because Y (SM-###, per RM-###)". Set that entry's `usage` field to describe where it was used.
 
 **2f. Design Requirements / Task Labels** (where applicable)
 - Derive requirements from SOURCE MAP entries (domain observations, expert input, study findings)
