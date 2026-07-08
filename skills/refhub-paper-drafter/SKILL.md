@@ -9,14 +9,15 @@ Draft HCI and visualization research manuscripts from personal notes and vault e
 
 ## Prerequisites
 
-The following must be installed and authenticated in the user's environment:
+Required in the user's environment:
 
 | Tool | Repository |
 |------|-----------|
 | `refhub` CLI (`@refhub/cli`) | https://github.com/refhub-io/refhub-cli |
-| `refhub-skill` agent skill (Claude Code / Codex / generic harnesses) | https://github.com/refhub-io/refhub-skill |
 
-This skill does not install or configure these tools.
+This skill's own workflow only needs `vaults:read`/`vaults:export` — nothing that requires the separate [`refhub-skill`](https://github.com/refhub-io/refhub-skill) agent skill (that one covers the fuller read/write surface: adding items, PDFs, Semantic Scholar). `refhub-skill` is an optional companion, not a prerequisite for this skill.
+
+This skill does not install or configure these tools by default — see "Operating RefHub" below for how it offers to help with the CLI specifically.
 
 ---
 
@@ -42,7 +43,18 @@ refhub export --vault <vaultId> --format bibtex
 
 Exit codes: `0` success · `1` API error · `2` bad arguments · `3` auth error (missing/invalid key).
 
-**If the CLI is not available**, call the API directly:
+**If the CLI is not available**, ask the user before falling back to direct API calls — don't silently skip straight to raw HTTP:
+
+> The RefHub CLI isn't installed. It's the recommended way to run RefHub read operations — it handles auth, consistent output, and error formatting for you. Want me to set it up now?
+>
+> ```sh
+> npm install -g @refhub/cli
+> export REFHUB_API_KEY=rhk_<publicId>_<secret>   # get one from the RefHub web UI if you don't have one yet
+> ```
+>
+> If you'd rather not, I'll call the API directly for this session instead.
+
+If the user declines (or doesn't respond, or the environment can't run `npm install`), call the API directly:
 
 ```text
 Base URL: https://refhub-api.netlify.app/api/v1
