@@ -9,14 +9,15 @@ Draft HCI and visualization research manuscripts from personal notes and vault e
 
 ## Prerequisites
 
-The following must be installed and authenticated in the user's environment:
+Recommended in the user's environment:
 
 | Tool | Repository |
 |------|-----------|
 | `refhub` CLI (`@refhub/cli`) | https://github.com/refhub-io/refhub-cli |
-| `refhub-skill` agent skill (Claude Code / Codex / generic harnesses) | https://github.com/refhub-io/refhub-skill |
 
-This skill does not install or configure these tools.
+This skill's own workflow only needs `vaults:read`/`vaults:export` — nothing that requires the separate [`refhub-skill`](https://github.com/refhub-io/refhub-skill) agent skill (that one covers the fuller read/write surface: adding items, PDFs, Semantic Scholar). `refhub-skill` is an optional companion, not a prerequisite for this skill.
+
+This skill does not install or configure these tools by default — see "Operating RefHub" below for how it offers to help with the CLI specifically.
 
 ---
 
@@ -42,7 +43,18 @@ refhub export --vault <vaultId> --format bibtex
 
 Exit codes: `0` success · `1` API error · `2` bad arguments · `3` auth error (missing/invalid key).
 
-**If the CLI is not available**, call the API directly:
+**If the CLI is not available**, ask the user before falling back to direct API calls — don't silently skip straight to raw HTTP:
+
+> The RefHub CLI isn't installed. It's the recommended way to run RefHub read operations — it handles auth, consistent output, and error formatting for you. Want me to set it up now?
+>
+> ```sh
+> npm install -g @refhub/cli
+> export REFHUB_API_KEY=rhk_<publicId>_<secret>   # get one from the RefHub web UI if you don't have one yet
+> ```
+>
+> If you'd rather not, I'll call the API directly for this session instead.
+
+If the user declines (or doesn't respond, or the environment can't run `npm install`), call the API directly:
 
 ```text
 Base URL: https://refhub-api.netlify.app/api/v1
@@ -98,6 +110,21 @@ For the full read/write RefHub surface beyond what this skill needs — adding i
 
 There is no required `refhub synthesis` command in this workflow. Any synthesis is agent-produced from local notes plus `items search` or exported vault data, and must cite SOURCE MAP entries just like drafted prose.
 
+**Build the RELATION MAP** — read the `relations` field already present in the vault export/read response fetched above (no new API call). One entry per relation:
+
+```
+RELATION MAP ENTRY:
+  id:            RM-001
+  from_item:     <vault item id or citation_key>
+  to_item:       <vault item id or citation_key>
+  relation_type: [cites | extends | builds_on | contradicts | reviews | related]
+  usage:         <where this informs the draft, once assigned — e.g. "gap
+                  statement in Related Work", "contradiction discussion in
+                  Discussion" — or not yet used if not yet referenced>
+```
+
+If the `relations` field is absent or empty, skip this step silently — relations are an enhancement, not a requirement, the same way `notes` is treated as present-when-available.
+
 **Build the SOURCE MAP** — a structured index with one entry per usable fact or claim:
 
 ```
@@ -118,7 +145,7 @@ SOURCE MAP ENTRY FORMAT:
   notes:           <uncertainties, conflicts, or follow-up needed>
 ```
 
-Print a summary when complete: "SOURCE MAP: N entries from M local files + K vault queries."
+Print a summary when complete: "SOURCE MAP: N entries from M local files + K vault queries." If the RELATION MAP has at least one entry, also print "RELATION MAP: N entries from vault relations." — omit this second line entirely if the RELATION MAP is empty; don't announce an empty, unused structure.
 
 Emit the SOURCE MAP as an auditable table or JSON block before drafting. The SOURCE MAP is closed after Phase 1. New entries are added only when the user resolves a `[NEEDS SOURCE]` flag in Phase 3; record such additions in a "Source-map amendments" log with date, source, and reason.
 
@@ -161,13 +188,14 @@ Justify the order against the contributions.
 For each section:
 - What is the one key claim this section must establish?
 - Which SOURCE MAP entries (by ID) support that claim?
+- If a RELATION MAP entry (by ID) strengthens the claim — e.g. justifying why this section addresses a gap relative to a specific prior item — cite it alongside the SOURCE MAP entries and set that RELATION MAP entry's `usage` field.
 - Flag any section with fewer than 2 supporting entries — surface to user before drafting.
 
 **2e. Related Work Positioning**
-From vault tags:
-- Which intellectual threads does this work build on?
+From vault tags and the RELATION MAP:
+- Which intellectual threads does this work build on? Use tag co-occurrence as a starting signal, but check the RELATION MAP for `cites`/`extends`/`builds_on`/`contradicts`/`reviews`/`related` entries between SOURCE MAP items in scope — an actual relation is stronger, more precise positioning evidence than tag co-occurrence alone.
 - For each thread: what does prior work achieve, and what does it leave open?
-- State the gap precisely: "Prior work assumes X; we relax X because Y (SM-###)"
+- State the gap precisely: "Prior work assumes X; we relax X because Y (SM-###)" — where a RELATION MAP entry supports the gap statement (e.g. a `contradicts` or `extends` relation), cite it too: "...because Y (SM-###, per RM-###)". Set that entry's `usage` field to describe where it was used.
 
 **2f. Design Requirements / Task Labels** (where applicable)
 - Derive requirements from SOURCE MAP entries (domain observations, expert input, study findings)
@@ -291,7 +319,7 @@ For Overleaf (option 3):
 ### Drafting rule
 
 For each section in scaffold order:
-1. Draft prose using only SOURCE MAP entries + the scaffold argument map
+1. Draft prose using only SOURCE MAP entries + the scaffold argument map. Where a RELATION MAP entry was cited in the Phase 2d/2e scaffold for this section, its `contradicts`/`extends`/`builds_on` relationship can become actual prose (e.g. "prior work assumes X; we relax X because Y"), not just backstage bookkeeping — update that RELATION MAP entry's `usage` field to the section it landed in.
 2. Run Loop A (grounding check)
 3. Run Loop B (writing quality)
 4. Present the polished section; accept feedback before moving to the next
@@ -397,7 +425,7 @@ After the full draft is assembled, adopt the R2 persona and attack the paper.
 - **Evaluation validity:** Sample size, task selection, participant diversity, ecological validity
 - **Over-interpretation:** Does the discussion claim more than the evidence allows?
 - **Limitations:** Are significant validity threats omitted or understated?
-- **Related work:** Missing influential citations, mischaracterized prior work
+- **Related work:** Missing influential citations, mischaracterized prior work. Scan the RELATION MAP for entries still marked `usage: not yet used` — for each, check whether it plausibly bears on a claim already in the draft; if so, flag it the same way an ungrounded claim gets flagged in Loop A, rather than leaving it silently unused.
 - **Length/scope discipline:** Was essential material improperly deferred to supplementary in Phase 4 to hit the page budget? Conversely, is the paper padded or under-length for the contribution it claims?
 
 **Output format:**
