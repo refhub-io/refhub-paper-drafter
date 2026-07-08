@@ -15,7 +15,7 @@ RELATION MAP ENTRY:
   to_item:       <vault item id or citation_key>
   relation_type: [cites | extends | builds_on | contradicts | reviews | related]
   usage:         <where this informs the draft, once assigned — gap statement,
-                  contradiction discussion, "not yet used" if unassigned>
+                  contradiction discussion, not yet used if unassigned>
 ```
 
 **Build step (Phase 1):** when vault data is fetched (via `refhub export --vault <id> --format json` or the direct `GET /vaults/:vaultId` fallback), read the `relations` field already present in that response and build one RELATION MAP entry per relation. This requires no new API call — it's a new *use* of data Phase 1 already receives. Skip silently (not an error) if the field is absent or empty; relations are enhancement, not a requirement, matching how `notes` is treated as present-when-available.

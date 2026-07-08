@@ -13,7 +13,7 @@ project uses [Semantic Versioning](https://semver.org/). History prior to
   INVENTORY) built in Phase 1 from the `relations` field already present in
   the vault export/read response — no new API call. One entry per relation
   (`cites`/`extends`/`builds_on`/`contradicts`/`reviews`/`related`), with a
-  `usage` field defaulting to `"not yet used"`.
+  `usage` field defaulting to `not yet used`.
 - Phase 2e (Related Work Positioning) now cross-references the RELATION MAP
   alongside vault tags — an actual `cites`/`extends`/`contradicts`/etc.
   relation is treated as stronger positioning evidence than tag

@@ -117,7 +117,7 @@ RELATION MAP ENTRY:
   relation_type: [cites | extends | builds_on | contradicts | reviews | related]
   usage:         <where this informs the draft, once assigned — e.g. "gap
                   statement in Related Work", "contradiction discussion in
-                  Discussion" — or "not yet used" if not yet referenced>
+                  Discussion" — or not yet used if not yet referenced>
 ```
 
 If the `relations` field is absent or empty, skip this step silently — relations are an enhancement, not a requirement, the same way `notes` is treated as present-when-available.
