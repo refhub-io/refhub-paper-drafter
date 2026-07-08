@@ -4,9 +4,6 @@ Agent-facing instructions for drafting HCI and visualization research manuscript
 
 **Invoke it** by asking the agent to draft a paper, or by typing the skill name in your harness.
 
-
-Draft HCI and visualization research manuscripts from personal notes and vault entries. Every claim in the draft traces to a source in the collected inputs. Nothing is invented.
-
 ## Prerequisites
 
 Required in the user's environment:
