@@ -15,7 +15,7 @@
 - Relations are an enhancement, not a requirement: absent/empty `relations` data is a silent no-op, matching how `notes` is already treated as present-when-available.
 - The CLI-install prompt is a nudge, not a hard requirement: declining (or an environment that can't run `npm install`) falls back to the existing direct-API instructions unchanged.
 - Version bump: `1.2.0` → `1.3.0` across `.claude-plugin/plugin.json`, `.codex-plugin/plugin.json`, and both version fields in `.claude-plugin/marketplace.json` (`metadata.version` and `plugins[0].version`).
-- This repo has no `CHANGELOG.md` — do not add one; it wasn't requested for this repo.
+- This repo has no `CHANGELOG.md` — do not add one; it wasn't requested for this repo. **Superseded during execution:** the user explicitly requested a `CHANGELOG.md` after this plan was written, so Task 5's commit history includes an additional "Add CHANGELOG.md" commit beyond what this plan originally specified.
 
 ---
 

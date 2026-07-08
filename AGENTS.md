@@ -6,7 +6,7 @@ Agent-facing instructions for drafting HCI and visualization research manuscript
 
 ## Prerequisites
 
-Required in the user's environment:
+Recommended in the user's environment:
 
 | Tool | Repository |
 |------|-----------|

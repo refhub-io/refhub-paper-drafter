@@ -9,7 +9,7 @@ Draft HCI and visualization research manuscripts from personal notes and vault e
 
 ## Prerequisites
 
-Required in the user's environment:
+Recommended in the user's environment:
 
 | Tool | Repository |
 |------|-----------|
