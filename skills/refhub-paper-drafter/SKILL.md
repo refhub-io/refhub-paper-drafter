@@ -98,6 +98,21 @@ For the full read/write RefHub surface beyond what this skill needs — adding i
 
 There is no required `refhub synthesis` command in this workflow. Any synthesis is agent-produced from local notes plus `items search` or exported vault data, and must cite SOURCE MAP entries just like drafted prose.
 
+**Build the RELATION MAP** — read the `relations` field already present in the vault export/read response fetched above (no new API call). One entry per relation:
+
+```
+RELATION MAP ENTRY:
+  id:            RM-001
+  from_item:     <vault item id or citation_key>
+  to_item:       <vault item id or citation_key>
+  relation_type: [cites | extends | builds_on | contradicts | reviews | related]
+  usage:         <where this informs the draft, once assigned — e.g. "gap
+                  statement in Related Work", "contradiction discussion in
+                  Discussion" — or "not yet used" if not yet referenced>
+```
+
+If the `relations` field is absent or empty, skip this step silently — relations are an enhancement, not a requirement, the same way `notes` is treated as present-when-available.
+
 **Build the SOURCE MAP** — a structured index with one entry per usable fact or claim:
 
 ```
@@ -118,7 +133,7 @@ SOURCE MAP ENTRY FORMAT:
   notes:           <uncertainties, conflicts, or follow-up needed>
 ```
 
-Print a summary when complete: "SOURCE MAP: N entries from M local files + K vault queries."
+Print a summary when complete: "SOURCE MAP: N entries from M local files + K vault queries." If the RELATION MAP has at least one entry, also print "RELATION MAP: N entries from vault relations." — omit this second line entirely if the RELATION MAP is empty; don't announce an empty, unused structure.
 
 Emit the SOURCE MAP as an auditable table or JSON block before drafting. The SOURCE MAP is closed after Phase 1. New entries are added only when the user resolves a `[NEEDS SOURCE]` flag in Phase 3; record such additions in a "Source-map amendments" log with date, source, and reason.
 
