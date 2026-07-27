@@ -418,6 +418,28 @@ After the full draft is assembled, adopt the R2 persona and attack the paper.
 
 **R2 Persona:** Skeptical, thorough, looking for reasons to reject. Not hostile for sport — hostile because the field has high standards.
 
+**VIS calibration:** Before writing the R2 review, run a VIS-specific pass derived from public IEEE VIS 2025 peer-review patterns. Treat these as extra checks on top of the generic attack surface, not as a substitute for venue guidelines or the SOURCE MAP.
+
+For each applicable paper type, ask whether a VIS reviewer could make the following critique. If yes, include it in the R2 review with the appropriate `[fatal | major | minor]` severity:
+
+- **Contribution fit and novelty:** Is the contribution legible to the VIS community, not only to the application domain? Is the claimed novelty more than a system integration, case study, design variant, or implementation detail? If the work is mainly a framework, grammar, system, or design artifact, does the draft state the transferable research idea separately from the artifact?
+- **Positioning against prior VIS work:** Are the closest visualization, visual analytics, HCI, and domain-specific precedents named and characterized fairly? Does the related work explain what prior work assumes or cannot do, rather than claiming a broad gap?
+- **Data/task abstraction:** For design-study, system, and technique papers, are the domain data, user tasks, and abstraction decisions explicit enough for a VIS reader to judge fit and generality?
+- **Visual encoding and interaction rationale:** Does each important view, mark, layout, interaction, and workflow decision trace to a requirement, task, data property, or empirical observation? Are alternatives or tradeoffs acknowledged where a reviewer would ask "why this design?"
+- **Evaluation match to contribution:** Does the evaluation actually test the contribution being claimed? Flag mismatches such as a broad system contribution supported only by informal author self-assessment, a design framework supported only by examples, or a technique contribution without baseline, ablation, benchmark, or task-fit evidence.
+- **Evidence strength and interpretation:** Are sample size, expert selection, participant population, dataset choice, case-study breadth, metrics, and qualitative analysis strong enough for the claims? Does the discussion avoid turning formative feedback, anecdotal examples, or narrow cases into general conclusions?
+- **Reproducibility and inspectability:** Are code, data, parameters, stimuli, study materials, supplemental figures, and implementation details available or their absence justified? Can a reviewer inspect enough detail to reproduce the method or evaluate the artifact?
+- **Figure and example sufficiency:** Do figures carry the argument by showing real data, workflows, comparisons, or design consequences? Are captions takeaways rather than labels, and are there enough concrete examples for readers to understand the method's behavior?
+- **Limitations and boundary conditions:** Are failure modes, scope limits, domain dependence, accessibility constraints, scalability/performance limits, and ecological-validity threats named specifically rather than deferred to vague future work?
+- **Presentation clarity:** Would a reviewer struggle to identify the paper's main claim, section logic, terminology, or what changed after revision? Flag unclear organization, missing definitions, weak examples, and overloaded contribution lists.
+
+**VIS severity guidance:**
+- `[fatal]` — the critique attacks the paper's core claim: unclear or overstated contribution, unsupported novelty, evaluation that does not test the claimed contribution, untrustworthy computational/visual output, or conclusions that exceed the evidence.
+- `[major]` — the critique requires substantive revision: missing design rationale, weak related-work positioning, insufficient methodological detail, unclear evaluation reporting, important limitations missing, or reproducibility/material gaps.
+- `[minor]` — the critique is local and fixable: terminology, figure/caption clarity, added examples, small related-work additions, supplemental pointers, typos, or limited prose restructuring.
+
+When a VIS-calibrated critique is triggered, write it in reviewer style: begin with the paper-level concern, name the evidence or draft location that causes it, then state the concrete revision needed. Avoid vague "consider improving" feedback; VIS reviews in the public corpus are usually actionable, balanced, and explicit about whether a concern affects acceptance.
+
 **Attack surface:**
 - **Novelty:** Does prior work already do this? Is the claimed gap overstated?
 - **Methodology:** Is the evaluation sound? Are baselines appropriate and fairly chosen?
@@ -462,6 +484,7 @@ Required gates:
 - **Grounding:** zero unresolved `[NEEDS SOURCE]` markers; all manuscript claims trace to SOURCE MAP IDs.
 - **Provenance:** emit a claim-to-source matrix with manuscript section, paragraph ID, sentence ID, SOURCE MAP ID, source path or vault locator, citation key, evidence role/type/strength, and notes.
 - **R2 findings:** zero unresolved fatal findings; every major finding has a disposition and manuscript location or an explicit unresolved-risk note.
+- **VIS review fit:** the Phase 5 VIS-calibrated pass was run; every triggered contribution, positioning, task/data abstraction, visual encoding, evaluation, evidence-strength, reproducibility, figure/example, limitation, and clarity concern has an R2 severity and disposition.
 - **Ethics/IRB/privacy:** ethics/IRB status or "not applicable" rationale; consent, privacy, de-identification, compensation, and participant/data-log handling where relevant.
 - **AI disclosure:** include a venue-appropriate statement that an AI drafting assistant was used, what it did, and that authors verified sources and claims.
 - **Reproducibility/materials:** data, code, stimuli, protocols, analysis scripts/notebooks, preregistration, supplemental files, and licenses are available or their absence is justified.

@@ -145,6 +145,7 @@ the skill is a drafting assistant with explicit readiness gates. a manuscript is
 - venue/template/checklist status
 - paper/evaluation-type reporting fields
 - hci/visualization validity checks
+- vis-calibrated r2 review checks for contribution fit, task/data abstraction, encoding rationale, evaluation match, evidence strength, reproducibility, figures/examples, limitations, and clarity
 - figure/table inventory with source links, takeaway captions, placeholder status, and alt text
 
 ---
